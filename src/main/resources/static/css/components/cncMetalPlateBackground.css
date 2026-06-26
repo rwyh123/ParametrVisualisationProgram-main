@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Jura:wght@400;700&display=swap');
+
+:root {
+    /* --- НАСТРОЙКИ ПЛИТЫ --- */
+    --plate-bolt-size: 26px;
+    --plate-edge-offset: 5px;     /* Отступ болта от края плиты */
+    --plate-safe-padding: 5px;    /* Отступ контента от болта */
+
+    /* Расстояние между элементами ВНУТРИ плиты */
+    --plate-content-gap: 10px;
+
+    /* Итоговый внутренний отступ контейнера:
+       5px (край) + 26px (болт) + 5px (безопасность) = 36px */
+    --plate-padding: calc(var(--plate-edge-offset) + var(--plate-bolt-size) + var(--plate-safe-padding));
+}
+
+.cnc-metal-plate {
+    position: relative;
+
+    /* АДАПТИВНОСТЬ: */
+    /* Блок подстраивается под содержимое, но слушается width/height */
+    display: inline-flex;
+    flex-direction: column;
+    box-sizing: border-box;
+
+    /* ТЕКСТУРА */
+    background-image: url("/img/metal-plate.png");
+    background-size: contain;
+    background-repeat: repeat;
+    background-position: center;
+    border: 2px solid #7c7c7c;
+
+    /* ЗОНА БЕЗОПАСНОСТИ */
+    /* Контент отодвинут от краев, чтобы не наехать на болты */
+    padding: var(--plate-padding);
+
+    box-shadow:
+        0 4px 6px rgba(0,0,0,0.4),
+        inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+/* --- ВНУТРЕННЯЯ ОБЛАСТЬ (КОНТЕНТ) --- */
+.cnc-metal-plate__content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+
+    /* ЛОГИКА РАСПОЛОЖЕНИЯ ЭЛЕМЕНТОВ: */
+    /* Включаем Flexbox, чтобы управлять элементами внутри */
+    display: flex;
+
+    /* По умолчанию элементы строятся вертикально (сверху вниз) */
+    flex-direction: column;
+
+    /* Если элементы разной ширины, растягиваем их (опционально) */
+    align-items: center;
+
+    /* ДОБАВЛЕНО: Расстояние между вложенными элементами */
+    gap: var(--plate-content-gap);
+
+
+}
+
+/* --- БОЛТЫ --- */
+.cnc-metal-plate__bolt {
+    position: absolute;
+    width: var(--plate-bolt-size);
+    height: var(--plate-bolt-size);
+    z-index: 10;
+    pointer-events: none;
+}
+
+/* Строгое позиционирование - 5px от края */
+.cnc-metal-plate__bolt--tl { top: var(--plate-edge-offset); left: var(--plate-edge-offset); }
+.cnc-metal-plate__bolt--tr { top: var(--plate-edge-offset); right: var(--plate-edge-offset); }
+.cnc-metal-plate__bolt--bl { bottom: var(--plate-edge-offset); left: var(--plate-edge-offset); }
+.cnc-metal-plate__bolt--br { bottom: var(--plate-edge-offset); right: var(--plate-edge-offset); }

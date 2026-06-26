@@ -1,0 +1,326 @@
+@import url('https://fonts.googleapis.com/css2?family=Jura:wght@400;700&display=swap');
+
+/* ====== ВНУТРЕННИЙ “ЭКРАН” ДЛЯ ГРАФИКА ====== */
+
+/* =============================================
+   ОСНОВНОЙ КОНТЕЙНЕР "ЭКРАНА"
+   ============================================= */
+
+.cnc-chart-screen {
+    position: relative;
+    width: 340px;
+    height: 200px;
+
+    background-color: #b7b7b7;
+
+    border: 1px solid #7c7c7c;
+    box-shadow:
+        0 2px 0 #8a8a8a,
+        0 3px 3px rgba(0,0,0,0.45);
+
+    padding: 4px;
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+
+    background-image:
+        /* --- 1. УГЛЫ (Оставляем 45deg, так как это рамка) --- */
+        linear-gradient(45deg, transparent 4px, #7c7c7c 4px, #7c7c7c 5px, transparent 5px),
+        linear-gradient(-45deg, transparent 4px, #7c7c7c 4px, #7c7c7c 5px, transparent 5px),
+        linear-gradient(135deg, transparent 4px, #7c7c7c 4px, #7c7c7c 5px, transparent 5px),
+        linear-gradient(-135deg, transparent 4px, #7c7c7c 4px, #7c7c7c 5px, transparent 5px),
+
+        /* --- 2. НОЖКИ Y (STEMS) --- */
+        /* Укоротили визуально за счет background-size ниже */
+        linear-gradient(to right, #7c7c7c, #7c7c7c),
+        linear-gradient(to right, #7c7c7c, #7c7c7c),
+
+        /* --- 3. ВЕТКИ Y (ARMS) - НОВЫЕ УГЛЫ 125/55 --- */
+        /* Сдвинули color-stop на 3px, чтобы линия попала в уменьшенный квадрат */
+
+        /* ЛЕВАЯ СТОРОНА: */
+        /* Верх (>) : Угол 125deg */
+        linear-gradient(125deg, transparent 3px, #7c7c7c 3px, #7c7c7c 4px, transparent 4px),
+        /* Низ (<) : Угол 55deg */
+        linear-gradient(55deg, transparent 3px, #7c7c7c 3px, #7c7c7c 4px, transparent 4px),
+
+        /* ПРАВАЯ СТОРОНА: */
+        /* Верх (<) : Угол -125deg */
+        linear-gradient(-125deg, transparent 3px, #7c7c7c 3px, #7c7c7c 4px, transparent 4px),
+        /* Низ (>) : Угол -55deg */
+        linear-gradient(-55deg, transparent 3px, #7c7c7c 3px, #7c7c7c 4px, transparent 4px);
+
+    background-position:
+        /* Углы */
+        top left, top right, bottom left, bottom right,
+
+        /* Ножки Y (Сместили к краю, так как они стали короче) */
+        left -1px bottom 33.5px,
+        right -1px bottom 33.5px,
+
+        /* Ветки Y (Стыкуем с новой короткой ножкой) */
+        /* Сдвигаем влево (left 2px), чтобы соединиться с ножкой шириной 2.5px */
+        left 2px bottom 34px,  /* Верх */
+        left 2px bottom 28.5px,  /* Низ */
+
+        /* Правая сторона */
+        right 2px bottom 34px,
+        right 2px bottom 28.5px;
+
+    background-size:
+        /* Углы (6.5px) */
+        6.5px 6.5px, 6.5px 6.5px, 6.5px 6.5px, 6.5px 6.5px,
+
+        /* --- УПРАВЛЕНИЕ ДЛИНОЙ НОЖКИ --- */
+        /* Было 4px, стало 2.5px (короткая палочка) */
+        4px 1px, 4px 1px,
+
+        /* --- УПРАВЛЕНИЕ ДЛИНОЙ ВЕТОК --- */
+        /* Было 6.5px, стало 5px (короткие усики) */
+        5.6px 5.6px, 5.6px 5.6px, 5.6px 5.6px, 5.6px 5.6px;
+
+    background-repeat: no-repeat;
+}
+
+/* Внутренний чёрный экран (под C3-график) */
+.cnc-chart-screen__plot {
+    flex: 1;
+    background: #000000;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+/* Контейнер для C3 – сюда будем монтировать график */
+.cnc-chart-screen__plot-inner {
+    width: 100%;
+    height: 100%;
+    fill: #f5f5f5 !important;
+    font-size: 12px;
+    font-family: 'Jura', sans-serif;
+}
+
+/* Нижняя полоса с 3 полями */
+.cnc-chart-screen__bottom {
+    margin-top: 4px;
+    height: 28px;
+    display: flex;
+    /* Добавляем явный отступ между черным блоком и группой белых */
+    gap: 4px;
+    box-sizing: border-box;
+}
+
+/* Название графика (чёрное поле) */
+.cnc-chart-screen__legend {
+    /* 60% минус половина отступа (2px), чтобы в сумме с gap вышло ровно 100% */
+    width: calc(45% - 2px);
+    flex: none; /* Запрещаем сжатие/растяжение */
+
+    background: #000000;
+    border: 1px solid #7c7c7c;
+    box-shadow:
+        inset 0 1px 0 #4a4a4a,
+        inset 0 -1px 0 #4a4a4a;
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+    font-family: 'Jura', sans-serif;
+    font-size: 14px;
+    letter-spacing: 2px;
+    color: #f5f5f5;
+    box-sizing: border-box;
+}
+
+/* Контейнер для двух маленьких полей справа -> 40% */
+.cnc-chart-screen__stats {
+    /* 40% минус вторая половина отступа */
+    width: calc(55% - 2px);
+    flex: none;
+
+    display: flex;
+    /* Отступ между самими белыми полями */
+    gap: 4px;
+    margin-left: 0; /* Убираем старый margin, теперь работает gap родителя */
+}
+
+/* Маленькое поле (TIME / VALUE) -> 20% (половина от 40%) */
+.cnc-chart-screen__stat {
+    /* Делим родителя пополам, учитывая внутренний gap */
+    width: calc(50% - 2px);
+    flex: none;
+
+    background: #ffffff;
+    border: 1px solid #7c7c7c;
+    box-shadow:
+        inset 0 1px 0 #efefef,
+        inset 0 -1px 0 #cccccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+    box-sizing: border-box;
+
+    font-family: 'Jura', sans-serif;
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: #111111;
+}
+
+/* Немного скошенный текст в полях (оставляем как было) */
+.cnc-chart-screen__legend span,
+.cnc-chart-screen__stat span {
+    display: inline-block;
+    transform: skewX(-8deg);
+}
+
+/* ====== НАСТРОЙКИ C3 ВНУТРИ ЭКРАНА ====== */
+
+/* Прозрачный фон SVG, чтобы был виден чёрный фон контейнера */
+.cnc-chart-screen__plot-inner .c3 svg {
+    background-color: transparent !important;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* Оси на чёрном фоне */
+.cnc-chart-screen__plot-inner .c3-axis path,
+.cnc-chart-screen__plot-inner .c3-axis line {
+    stroke: #777 !important;
+}
+
+/* =============================================
+   C3.js GLOBAL OVERRIDES (RETRO CNC STYLE)
+   ============================================= */
+
+/* 1. ОСИ И ТЕКСТ */
+/* Цвет текста осей (сделаем светло-серым, чтобы читалось на черном) */
+.cnc-chart-screen__plot-inner .c3-axis text {
+    fill: #a0a0a0 !important;
+    font-family: 'Jura', sans-serif !important;
+    font-size: 10px !important; /* Чуть меньше для компактности */
+}
+
+/* Цвет самих линий осей (более темный серый) */
+.cnc-chart-screen__plot-inner .c3-axis path,
+.cnc-chart-screen__plot-inner .c3-axis line {
+    stroke: #444444 !important;
+    stroke-width: 1px;
+}
+
+/* 2. ЛИНИЯ ГРАФИКА */
+/* Принудительно красим ВСЕ линии в "Кибер-Циан" (или #00ff00 для зелени) */
+/* Это избавит от разнобоя цветов по умолчанию */
+.cnc-chart-screen__plot-inner .c3-line {
+    stroke: #00eaff !important; /* Неоновый голубой */
+    stroke-width: 2px !important;
+    stroke-linecap: square; /* Квадратные концы линий для техницизма */
+}
+
+/* Если график заполненный (Area), делаем полупрозрачную заливку */
+.cnc-chart-screen__plot-inner .c3-area {
+    fill: #00eaff !important;
+    opacity: 0.1 !important;
+}
+
+/* 3. ТОЧКИ НА ГРАФИКЕ */
+/* Делаем их аккуратными "диодами" */
+.cnc-chart-screen__plot-inner .c3-circle {
+    fill: #000000 !important;   /* Черная середина */
+    stroke: #00eaff !important; /* Цветной ободок */
+    stroke-width: 2px !important;
+    r: 3 !important;            /* Радиус точки (фиксируем, чтобы не зависело от JS) */
+}
+
+
+
+/* При наведении точка загорается белым */
+.cnc-chart-screen__plot-inner .c3-circle._expanded_ {
+    fill: #ffffff !important;
+    stroke: #ffffff !important;
+    r: 4 !important;
+}
+
+/* 4. СКРЫТИЕ ЛЕГЕНДЫ */
+/* Переносим это из JS (legend: show: false) в CSS */
+.cnc-chart-screen__plot-inner .c3-legend-item {
+    display: none !important;
+}
+
+/* 5. СЕТКА (GRID) - Опционально */
+/* Если в JS включить grid: { x: { show: true }, y: { show: true } } */
+.cnc-chart-screen__plot-inner .c3-grid line {
+    stroke: #222222 !important; /* Очень тусклая сетка */
+    stroke-dasharray: 2 2;
+}
+
+/* 6. ТУЛТИП (Всплывающая подсказка) */
+/* Стилизуем под ретро-интерфейс */
+.c3-tooltip-container {
+    z-index: 100;
+}
+
+/* Контейнер подсказки */
+.c3-tooltip {
+    /* Фон всей таблички черный */
+    background-color: #000000 !important;
+    border: 1px solid #7c7c7c !important;
+    box-shadow: 4px 4px 0 rgba(0,0,0,0.5) !important;
+    font-family: 'Jura', sans-serif;
+    opacity: 1 !important;
+    /* Убираем лишние отступы, чтобы таблица была ровной */
+    border-collapse: collapse;
+}
+
+/* Заголовок (Время) */
+.c3-tooltip th {
+    background-color: #222222 !important;
+    border-bottom: 1px solid #555555 !important;
+    color: #ffe800 !important; /* Желтый цвет времени */
+    padding: 6px 10px;
+    font-size: 14px;
+    text-align: center;
+}
+
+/* Строки данных */
+.c3-tooltip tr {
+    /* ВАЖНО: Убираем белый фон у строк, который дает C3.js по умолчанию */
+    background-color: #000000 !important;
+    border: none !important;
+}
+
+/* Ячейки с данными */
+.c3-tooltip td {
+    background-color: #000000 !important; /* Черный фон */
+    color: #00eaff !important;            /* Текст (значение) цвета Cyan */
+    padding: 6px 10px;
+    font-size: 14px;
+    border-left: 1px solid #333 !important; /* Разделитель между названием и числом */
+}
+
+/* Название ряда (слева от значения) */
+.c3-tooltip td.name {
+    color: #aaaaaa !important; /* Имя параметра серым */
+    text-transform: uppercase;
+}
+
+/* Квадратик цвета (легенда) */
+.c3-tooltip td > span {
+    width: 10px !important;
+    height: 10px !important;
+    margin-right: 8px !important;
+    border: 1px solid #fff !important; /* Белая обводка, чтобы было видно на черном */
+    display: inline-block !important;
+    vertical-align: middle !important;
+}
+/* =============================================
+   СТИЛИ ДЛЯ ОПАСНОЙ ЗОНЫ ГРАФИКА (DANGER ZONE)
+   ============================================= */
+.c3-region.danger-zone rect {
+    fill: #ff0000 !important; /* Резервный красный цвет, если паттерн не сработает */
+    fill: url(#stripe-pattern) !important;
+    fill-opacity: 0.3 !important; /* Немного увеличим яркость (было 0.2) */
+}
+
+}
+
+

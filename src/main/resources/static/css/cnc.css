@@ -1,0 +1,158 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=PT+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Jura:wght@400;700&display=swap');
+/* =============================================
+   ГЛОБАЛЬНЫЕ СБРОСЫ И ШРИФТЫ
+   ============================================= */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: #c7c7c7;
+    /*font-family: "Share Tech Mono", monospace;*/
+    /*font-family: 'JetBrains Mono', monospace; */  /* 6.5 */
+    /*font-family: 'Fira Code', monospace; */ /* 7 */
+    /*font-family: 'Roboto Mono', monospace; */   /* ак будто все одно и то же  */
+    /*font-family: 'PT Mono', monospace;*/   /* ПОЧТИ ОНО  */
+    font-family: 'Jura', sans-serif;   /* 6.5 */
+
+}
+
+/* =============================================
+   ОСНОВНОЙ ЛЕЙАУТ
+   ============================================= */
+.cnc-layout {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden; /* Убираем скролл с body, скроллим только контент */
+    background: #c7c7c7;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ---------- HEADER ---------- */
+.cnc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 4px 8px;
+    flex: 0 0 auto; /* Не сжимать */
+}
+
+.cnc-title {
+    background: #000;
+    color: #fff;
+    padding: 6px 10px;
+    font-size: 18px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    line-height: 1.2;
+}
+
+.cnc-title span {
+    display: block;
+}
+
+.cnc-datetime {
+    background: #ffffff;
+    padding: 6px 18px;
+    font-size: 14px;
+    text-transform: uppercase;
+    border: 1px solid #aaaaaa;
+}
+
+.cnc-datetime div + div {
+    margin-top: 4px;
+}
+
+/* ---------- STRIPES ---------- */
+.cnc-stripe {
+    height: 40px;
+    border-top: 2px solid #888;
+    border-bottom: 2px solid #888;
+    background: repeating-linear-gradient(-45deg, #ffe900 0 28px, #000000 28px 56px);
+    flex: 0 0 auto;
+}
+
+/* ---------- MAIN AREA ---------- */
+.cnc-main {
+    flex: 1; /* Занимает всё доступное место */
+    border-top: 2px solid #888;
+    border-bottom: 2px solid #888;
+    background: #c7c7c7;
+    padding: 8px;
+
+    /* Flex-колонна для двух контейнеров */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Чтобы скролл был внутри блока контента */
+}
+
+/* ОБЩИЙ СТИЛЬ КОНТЕЙНЕРА (ТОНКАЯ РАМКА) */
+.cnc-box {
+    background: #c7c7c7;
+    border: 1px solid #8c8c8c; /* Тонкая серая рамка */
+    padding: 4px;
+    width: 100%;
+}
+
+/* 1. КОНТЕЙНЕР ПОД КНОПКИ */
+.cnc-box--menu {
+    flex: 0 0 auto; /* Высота по содержимому */
+}
+
+/* 2. КОНТЕЙНЕР ПОД СТРАНИЦЫ */
+.cnc-box--content {
+    flex: 1; /* Занимает оставшуюся высоту */
+    overflow: auto; /* Скролл появляется тут */
+    position: relative;
+}
+
+/* ---------- МЕНЮ ---------- */
+.cnc-menu {
+    display: flex;
+    gap: 14px;
+    /* Убрали margin, так как теперь есть padding у .cnc-box */
+}
+
+/* ---------- ЭКРАНЫ / ВКЛАДКИ ---------- */
+.cnc-screens {
+    width: 100%;
+    height: 100%;
+}
+
+.cnc-screen {
+    width: 100%;
+    display: none;
+}
+
+.cnc-screen--active {
+    display: block;
+}
+
+/* ЕДИНЫЙ СТИЛЬ ДЛЯ ВНУТРЕННЕГО КОНТЕНТА ВСЕХ ЭКРАНОВ
+   (Слева-направо, с переносом, выравнивание по верху)
+*/
+.cnc-screen-flow {
+    display: flex;
+    flex-wrap: wrap;       /* Перенос на новую строку если не влезает */
+    gap: 20px;             /* Небольшое расстояние между элементами */
+
+    justify-content: flex-start; /* Слева-направо */
+    align-items: flex-start;     /* Прижать к верху */
+
+    padding: 10px;
+}
+
+/* Заглушка */
+.cnc-placeholder {
+    padding: 20px;
+    font-size: 18px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}

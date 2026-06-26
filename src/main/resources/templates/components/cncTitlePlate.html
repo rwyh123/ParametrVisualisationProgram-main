@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>cncTitlePlate</title>
+</head>
+<body>
+
+<!--
+  Кастомный текстовый контейнер-заголовок.
+
+  Параметры:
+    label1 – верхняя строка текста
+    label2 – нижняя строка текста
+-->
+<div th:fragment="cnc-title(label1, label2)">
+    <div class="cnc-title-plate">
+        <!-- Текст -->
+        <div class="cnc-title-plate__text">
+            <!--<span th:text="${label1}">MACHINE</span><br>
+            <span th:text="${label2}">COORDINATE SYSTEM</span> -->
+            <span th:text="${label1}">ВНУТРЕННЯЯ</span><br>
+            <span th:text="${label2}">СИСТЕМА КООРДИНАТ</span>
+        </div>
+
+        <!-- Серая линия между болтами -->
+        <div class="cnc-title-plate__line"></div>
+
+        <!-- Болты по нижним углам -->
+        <img class="cnc-title-plate__bolt cnc-title-plate__bolt--left"
+             src="/img/bolt.png" alt="">
+        <img class="cnc-title-plate__bolt cnc-title-plate__bolt--right"
+             src="/img/bolt.png" alt="">
+    </div>
+</div>
+
+</body>
+</html>

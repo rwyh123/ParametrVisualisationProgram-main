@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<!--
+  Внутренний экран: график + название + время + последнее значение
+  Использование: <div th:replace="components/cncChartScreen :: cnc-chart-screen('tempChart')"></div>
+-->
+<div th:fragment="cnc-chart-screen(chartId)">
+    <div class="cnc-chart-screen">
+
+        <!-- Верхняя область: чёрный экран под график -->
+        <div class="cnc-chart-screen__plot">
+            <div class="cnc-chart-screen__plot-inner"
+                 th:attr="id=${chartId}"></div>
+        </div>
+
+        <!-- Нижняя полоса: название графика + время + последнее значение -->
+        <div class="cnc-chart-screen__bottom">
+
+            <!-- Название графика -->
+            <div class="cnc-chart-screen__legend">
+                <span th:text="${legendText} ?: ''"></span>
+            </div>
+
+            <!-- Два маленьких поля справа (time / last value) -->
+            <div class="cnc-chart-screen__stats">
+                <div class="cnc-chart-screen__stat">
+                    <span th:text="${lastTime} ?: ''"></span>
+                </div>
+                <div class="cnc-chart-screen__stat">
+                    <span th:text="${lastValue} ?: ''"></span>
+                </div>
+            </div>
+
+        </div> <!-- /.cnc-chart-screen__bottom -->
+
+    </div> <!-- /.cnc-chart-screen -->
+</div>
+
+</body>
+</html>

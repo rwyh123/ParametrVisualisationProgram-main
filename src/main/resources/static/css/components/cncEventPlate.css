@@ -1,0 +1,180 @@
+@import url('https://fonts.googleapis.com/css2?family=Jura:wght@400;700&display=swap');
+
+/* =============================================
+   КОНТЕЙНЕР ПЛАШКИ СОБЫТИЯ
+   ============================================= */
+.cnc-event-plate {
+    position: relative;
+
+    /* Фиксированная ширина 260px */
+    width: 260px;
+    height: 44px;
+
+    background-color: #b7b7b7;
+    border: 1px solid #7c7c7c;
+    box-shadow:
+        0 2px 0 #8a8a8a,
+        0 3px 3px rgba(0,0,0,0.45);
+
+    padding: 4px;
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+
+    /* --- ГРАДИЕНТНЫЕ ФАСКИ (Золотой Стандарт Вертикальной Y) --- */
+    background-origin: border-box;
+    background-repeat: no-repeat;
+
+    background-image:
+        /* 1. УГЛЫ */
+        linear-gradient(45deg, transparent 4px, #7c7c7c 4px, #7c7c7c 5px, transparent 5px),    /* TL */
+        linear-gradient(-45deg, transparent 4px, #7c7c7c 4px, #7c7c7c 5px, transparent 5px),   /* TR */
+        linear-gradient(135deg, transparent 4px, #7c7c7c 4px, #7c7c7c 5px, transparent 5px),   /* BL */
+        linear-gradient(-135deg, transparent 4px, #7c7c7c 4px, #7c7c7c 5px, transparent 5px),  /* BR */
+
+        /* 2. НОЖКИ Y (Вертикальные) */
+        linear-gradient(to bottom, #7c7c7c, #7c7c7c),
+        linear-gradient(to bottom, #7c7c7c, #7c7c7c),
+
+        /* 3. ВЕТКИ Y */
+        /* Верхний разрыв (Перевернутая Y) */
+        linear-gradient(145deg, transparent 3px, #7c7c7c 3px, #7c7c7c 4px, transparent 4px),
+        linear-gradient(-145deg, transparent 3px, #7c7c7c 3px, #7c7c7c 4px, transparent 4px),
+
+        /* Нижний разрыв (Прямая Y) */
+        linear-gradient(35deg, transparent 3px, #7c7c7c 3px, #7c7c7c 4px, transparent 4px),
+        linear-gradient(-35deg, transparent 3px, #7c7c7c 3px, #7c7c7c 4px, transparent 4px);
+
+    background-position:
+        /* 1. Углы */
+        0 0, 100% 0, 0 100%, 100% 100%,
+
+        /* 2. Ножки Y (Смещаем на 40%) */
+        /* 40% - это граница левого блока. Центр gap = 40% + 2px. */
+        /* Смещаем влево на 0.5px (половина ширины ножки) */
+        /* Итого: calc(40% + 1.5px) */
+        left calc(40% + 1.2px) top 0,
+        left calc(40% + 1.2px) bottom 0,
+
+        /* 3. Ветки Y */
+        /* Смещаем относительно центра gap (40% + 2px) */
+
+        /* Верхний разрыв */
+        left calc(40% - 0.5px) top 2px,    /* Слева */
+        left calc(40% + 2.5px) top 2px,    /* Справа */
+
+        /* Нижний разрыв */
+        left calc(40% - 0.5px) bottom 2px, /* Слева */
+        left calc(40% + 2.5px) bottom 2px; /* Справа */
+
+    background-size:
+        /* Углы */
+        6.5px 6.5px, 6.5px 6.5px, 6.5px 6.5px, 6.5px 6.5px,
+        /* Ножки */
+        1px 4px, 1px 4px,
+        /* Ветки */
+        4px 4px, 4px 4px, 4px 4px, 4px 4px;
+}
+
+/* =============================================
+   ВНУТРЕННИЕ ЭКРАНЫ
+   ============================================= */
+
+.cnc-event-plate__screen {
+    position: relative;
+    border: 1px solid #7c7c7c;
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+    box-sizing: border-box;
+    font-family: 'Jura', sans-serif;
+    font-size: 14px;
+    letter-spacing: 1px;
+
+    flex: none;
+}
+
+/* Левый экран: 40% (Белый) */
+.cnc-event-plate__screen--label {
+    width: calc(40% - 2px);
+    background-color: #ffffff;
+    color: #111111;
+    justify-content: flex-start;
+    box-shadow: inset 0 1px 0 #efefef, inset 0 -1px 0 #cccccc;
+}
+
+/* Правый экран: 60% (Черный) */
+.cnc-event-plate__screen--state {
+    width: calc(60% - 2px);
+    background-color: #000000;
+    color: #f5f5f5;
+    justify-content: space-between; /* Распределяем ON и OFF */
+
+    /* Внутренняя тень для черного экрана */
+    box-shadow: inset 0 1px 0 #333, inset 0 -1px 0 #333;
+}
+
+.cnc-event-plate__screen span {
+    display: inline-block;
+    transform: skewX(-8deg);
+}
+
+/* Блок состояния (Текст + Лампа) */
+.cnc-event-plate__state-block {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* =============================================
+   ЛАМПЫ
+   ============================================= */
+
+.cnc-lamp {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #333; /* Выключенная база */
+    border: 2px solid #555;
+    position: relative;
+    box-shadow: 0 0 2px #000 inset;
+}
+
+/* Внутренняя часть лампы */
+.cnc-lamp::before {
+    content: "";
+    position: absolute;
+    inset: 2px;
+    border-radius: 50%;
+    background: #222;
+    transition: background 0.1s, box-shadow 0.1s;
+}
+
+/* Блик */
+.cnc-lamp::after {
+    content: "";
+    position: absolute;
+    top: 3px; left: 3px;
+    width: 4px; height: 3px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.4);
+}
+
+/* Цвета и Состояния */
+.cnc-lamp--green.cnc-lamp--on::before {
+    background: #00ff00;
+    box-shadow: 0 0 6px #00ff00;
+}
+.cnc-lamp--green.cnc-lamp--off::before {
+    background: #004400;
+}
+
+.cnc-lamp--red.cnc-lamp--on::before {
+    background: #ff0000;
+    box-shadow: 0 0 6px #ff0000;
+}
+.cnc-lamp--red.cnc-lamp--off::before {
+    background: #440000;
+}

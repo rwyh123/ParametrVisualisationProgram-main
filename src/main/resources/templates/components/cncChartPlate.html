@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<!--
+  Внешняя металлическая плита + болты.
+  Внутри — внутренний экран с графиком (cncChartScreen).
+  Использование:
+  <div th:replace="components/cncChartPlate :: cnc-chart-plate('tempChart')"></div>
+-->
+<div th:fragment="cnc-chart-plate(chartId)">
+    <div class="cnc-chart-plate">
+
+        <!-- Болты по углам -->
+        <div class="cnc-chart-plate__bolt cnc-chart-plate__bolt--tl"></div>
+        <div class="cnc-chart-plate__bolt cnc-chart-plate__bolt--tr"></div>
+        <div class="cnc-chart-plate__bolt cnc-chart-plate__bolt--bl"></div>
+        <div class="cnc-chart-plate__bolt cnc-chart-plate__bolt--br"></div>
+
+        <!-- Внутренняя область, по центру — экран -->
+        <div class="cnc-chart-plate__inner">
+            <div th:replace="components/cncChartScreen :: cnc-chart-screen(${chartId})"></div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

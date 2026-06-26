@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>cncDoubleDisplay</title>
+</head>
+<body>
+
+<div th:fragment="cnc-double-display(label, value)">
+    <div class="cnc-double-display">
+        <div class="cnc-double-display__screen cnc-double-display__screen--label">
+            <span th:text="${label}">LABEL</span>
+        </div>
+
+        <div class="cnc-double-display__screen cnc-double-display__screen--value">
+            <span th:text="${value}">0.000</span>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

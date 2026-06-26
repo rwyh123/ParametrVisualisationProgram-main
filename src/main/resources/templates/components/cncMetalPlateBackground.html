@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>cncMetalPlateBackground</title>
+</head>
+<body>
+
+<div th:fragment="cnc-metal-plate">
+    <div class="cnc-metal-plate">
+        <div class="cnc-metal-plate__content">
+        </div>
+        <div th:replace="~{this :: bolts}"></div>
+    </div>
+</div>
+
+<div th:fragment="bolts">
+    <img class="cnc-metal-plate__bolt cnc-metal-plate__bolt--tl" src="/img/bolt.png" alt="">
+    <img class="cnc-metal-plate__bolt cnc-metal-plate__bolt--tr" src="/img/bolt.png" alt="">
+    <img class="cnc-metal-plate__bolt cnc-metal-plate__bolt--bl" src="/img/bolt.png" alt="">
+    <img class="cnc-metal-plate__bolt cnc-metal-plate__bolt--br" src="/img/bolt.png" alt="">
+</div>
+
+</body>
+</html>

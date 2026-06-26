@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>cncEventPlate</title>
+</head>
+<body>
+
+<div th:fragment="cnc-event-plate(labelText, isOnActive, isOffActive)">
+    <div class="cnc-event-plate">
+
+        <div class="cnc-event-plate__screen cnc-event-plate__screen--label">
+            <span th:text="${labelText}">EVENT</span>
+        </div>
+
+        <div class="cnc-event-plate__screen cnc-event-plate__screen--state">
+
+            <div class="cnc-event-plate__state-block">
+                <span>ON</span>
+                <div class="cnc-lamp cnc-lamp--green"
+                     th:classappend="${isOnActive} ? ' cnc-lamp--on' : ' cnc-lamp--off'"></div>
+            </div>
+
+            <div class="cnc-event-plate__state-block">
+                <span>OFF</span>
+                <div class="cnc-lamp cnc-lamp--red"
+                     th:classappend="${isOffActive} ? ' cnc-lamp--on' : ' cnc-lamp--off'"></div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

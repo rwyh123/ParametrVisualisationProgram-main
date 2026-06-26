@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="cnc-message-panel(fromText, timeText, dateText, bodyText)">
+    <div class="cnc-message-panel">
+
+        <div class="cnc-message-panel__screen cnc-message-panel__screen--header">
+            <span>СООБЩЕНИЕ</span>
+        </div>
+
+        <div class="cnc-message-panel__screen cnc-message-panel__screen--body">
+
+            <div class="cnc-message-panel__line">
+                <span class="cnc-message-panel__label">FROM:</span>
+                <span class="cnc-message-panel__value" th:text="${fromText}">MACHINE 1</span>
+            </div>
+
+            <div class="cnc-message-panel__line">
+                <span class="cnc-message-panel__label">TIME:</span>
+                <span class="cnc-message-panel__value" th:text="${timeText}">00:00:00</span>
+            </div>
+
+            <div class="cnc-message-panel__line">
+                <span class="cnc-message-panel__label">DATE:</span>
+                <span class="cnc-message-panel__value" th:text="${dateText}">01/01/2025</span>
+            </div>
+
+            <div class="cnc-message-panel__line cnc-message-panel__line--content">
+                <span class="cnc-message-panel__label">BODY:</span>
+                <span class="cnc-message-panel__value" th:text="${bodyText}">INFO...</span>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

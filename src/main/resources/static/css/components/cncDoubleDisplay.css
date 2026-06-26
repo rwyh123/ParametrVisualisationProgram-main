@@ -1,0 +1,135 @@
+@import url('https://fonts.googleapis.com/css2?family=Jura:wght@400;700&display=swap');
+
+.cnc-double-display {
+    position: relative;
+
+    /* ФИКСИРОВАННАЯ ШИРИНА (как вы просили) */
+    width: 260px;
+    height: 44px;
+
+    background-color: #b7b7b7;
+    border: 1px solid #7c7c7c;
+    box-shadow:
+        0 2px 0 #8a8a8a,
+        0 3px 3px rgba(0,0,0,0.45);
+
+    /* Отступ равен толщине ножки Y (4px) */
+    padding: 4px;
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: row;
+
+    /* Зазор между белыми экранами (равен ширине ножки) */
+    gap: 4px;
+
+    /* ВАЖНО: Рисуем от края бордера */
+    background-origin: border-box;
+    background-repeat: no-repeat;
+
+    background-image:
+        /* --- 1. УГЛЫ (4 шт) --- */
+        linear-gradient(45deg, transparent 4px, #7c7c7c 4px, #7c7c7c 5px, transparent 5px),    /* TL */
+        linear-gradient(-45deg, transparent 4px, #7c7c7c 4px, #7c7c7c 5px, transparent 5px),   /* TR */
+        linear-gradient(135deg, transparent 4px, #7c7c7c 4px, #7c7c7c 5px, transparent 5px),   /* BL */
+        linear-gradient(-135deg, transparent 4px, #7c7c7c 4px, #7c7c7c 5px, transparent 5px),  /* BR */
+
+        /* --- 2. НОЖКИ Y (2 шт, Вертикальные) --- */
+        linear-gradient(to bottom, #7c7c7c, #7c7c7c), /* Верхняя */
+        linear-gradient(to bottom, #7c7c7c, #7c7c7c), /* Нижняя */
+
+        /* --- 3. ВЕТКИ Y (4 шт) --- */
+
+        /* ВЕРХНИЙ РАЗРЫВ (Перевернутая Y): */
+        /* Левая ветка (идет вправо-вниз \) -> 135deg */
+        linear-gradient(145deg, transparent 3px, #7c7c7c 3px, #7c7c7c 4px, transparent 4px),
+        /* Правая ветка (идет влево-вниз /) -> -135deg */
+        linear-gradient(-145deg, transparent 3px, #7c7c7c 3px, #7c7c7c 4px, transparent 4px),
+
+        /* НИЖНИЙ РАЗРЫВ (Прямая Y): */
+        /* Левая ветка (идет вправо-вверх /) -> 45deg */
+        linear-gradient(35deg, transparent 3px, #7c7c7c 3px, #7c7c7c 4px, transparent 4px),
+        /* Правая ветка (идет влево-вверх \) -> -45deg */
+        linear-gradient(-35deg, transparent 3px, #7c7c7c 3px, #7c7c7c 4px, transparent 4px);
+
+    background-position:
+        /* 1. Углы (прижимаем к краям) */
+        0 0,         /* TL */
+        100% 0,      /* TR */
+        0 100%,      /* BL */
+        100% 100%,   /* BR */
+
+        /* 2. Ножки Y (По центру gap) */
+        /* Gap начинается на 60% минус 2px. Центр gap = 60%. */
+        /* Смещаем влево на 0.5px (половина ширины ножки 1px), чтобы было ровно */
+        left calc(60% - 0.5px) top 0,     /* Верхняя ножка */
+        left calc(60% - 0.5px) bottom 0,  /* Нижняя ножка */
+
+        /* 3. Ветки Y */
+
+        /* Верхний разрыв (отступаем 2px вниз от края) */
+        left calc(60% - 1.5px) top 2px,    /* Слева (\) */
+        left calc(60% + 1.5px) top 2px,    /* Справа (/) */
+
+        /* Нижний разрыв (отступаем 2px вверх от края) */
+        left calc(60% - 1.5px) bottom 2px, /* Слева (/) */
+        left calc(60% + 1.5px) bottom 2px; /* Справа (\) */
+
+    background-size:
+        /* 1. Углы */
+        6.5px 6.5px, 6.5px 6.5px, 6.5px 6.5px, 6.5px 6.5px,
+
+        /* 2. Ножки (Ширина 1px, Высота 4px) */
+        1px 4px, 1px 4px,
+
+        /* 3. Ветки (Квадратик 5.6px) */
+        4px 4px, 4px 4px, 4px 4px, 4px 4px;
+}
+
+/* =============================================
+   ВНУТРЕННИЕ ЭКРАНЫ
+   ============================================= */
+
+.cnc-double-display__screen {
+    position: relative;
+    background-color: #ffffff;
+
+    /* Тонкая рамка внутри */
+    border: 1px solid #7c7c7c;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+
+    font-family: 'Jura', sans-serif;
+    font-size: 18px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #111111;
+
+    flex: none;
+}
+
+/* Левый экран: 60% */
+.cnc-double-display__screen--label {
+    /* 60% минус половина gap (2px) */
+    width: calc(60% - 2px);
+    justify-content: flex-start;
+    padding-left: 10px;
+    box-shadow: inset 0 1px 0 #efefef, inset 0 -1px 0 #cccccc;
+}
+
+/* Правый экран: 40% */
+.cnc-double-display__screen--value {
+    /* 40% минус половина gap (2px) */
+    width: calc(40% - 2px);
+    justify-content: flex-end;
+    padding-right: 10px;
+    box-shadow: inset 0 1px 0 #efefef, inset 0 -1px 0 #cccccc;
+}
+
+.cnc-double-display__screen span {
+    display: inline-block;
+    transform: skewX(-8deg);
+}

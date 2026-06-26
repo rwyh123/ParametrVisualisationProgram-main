@@ -1,0 +1,262 @@
+@import url('https://fonts.googleapis.com/css2?family=Jura:wght@400;700&display=swap');
+:root {
+    /* --- ПАЛИТРА --- */
+    --cnc-color-body: #b7b7b7;
+    --cnc-color-border: #5B5B5B; /* Тот самый цвет для стенок и рамок */
+
+    /* --- ГЕОМЕТРИЯ РАМКИ (ШАХТЫ) --- */
+    --frame-width: 8px;
+
+    /* --- ГЕОМЕТРИЯ КНОПКИ --- */
+    --btn-height: 40px;
+
+    /* Размеры крыльев */
+    --base-wall-size: 7px;   /* В покое */
+    --active-wall-size: 2px; /* При нажатии */
+
+    /* Текущее значение (изменяется при клике) */
+    --current-wall-size: var(--base-wall-size);
+
+    --border-width: 1px;
+
+    /* Вертикальный ход кнопки */
+    --lift-amount: -7px;
+    --press-depth: -1px;
+}
+
+/* =============================================
+   1. КОНТЕЙНЕР (ШАХТА) - БЕЗ ИЗМЕНЕНИЙ
+   ============================================= */
+.cnc-menu {
+    display: flex;
+    gap: 16px;
+    padding: 10px;
+    align-items: center;
+}
+
+.cnc-btn-wrap {
+    position: relative;
+    padding: 0;
+    min-width: 160px;
+    background: #1a1a1a;
+    border: var(--border-width) solid var(--cnc-color-border);
+    box-shadow: 0 5px 10px rgba(0,0,0,0.6);
+    overflow: visible;
+    z-index: 0;
+    margin-top: 10px;
+    display: flex;
+    align-items: stretch;
+}
+
+/* Верхняя планка (Слой 1) - ИСПРАВЛЕННАЯ ВЕРСИЯ */
+.cnc-btn-wrap::before {
+    content: "";
+    position: absolute;
+
+    /* 1. Занимаем ВСЁ пространство, как и ::after */
+    inset: 0;
+
+    background-color: #000;
+    background-image: repeating-linear-gradient(-45deg, #ffe800 0 10px, #000000 10px 20px);
+    background-origin: border-box;
+
+    /* 2. Делаем ПОЛНУЮ рамку, как у ::after, чтобы координаты градиента совпали */
+    border: var(--border-width) solid var(--cnc-color-border);
+
+    z-index: 5; /* Лежит позади кнопки */
+
+    /* 3. МАГИЯ: Обрезаем всё, кроме верхней полосы */
+    /* Синтаксис inset: top right bottom left */
+    /* Мы говорим: "Покажи сверху 0, а снизу обрежь всё, кроме размера frame-width" */
+    clip-path: inset(0 0 calc(100% - var(--frame-width)) 0);
+}
+
+.cnc-btn-wrap::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: #000;
+    background-image: repeating-linear-gradient(-45deg, #ffe800 0 10px, #000000 10px 20px);
+    background-origin: border-box;
+    border: var(--border-width) solid var(--cnc-color-border);
+    z-index: 20;
+    pointer-events: none;
+    clip-path: polygon(
+        0 0, 0 100%, 100% 100%, 100% 0,
+        calc(100% - var(--frame-width)) 0,
+        calc(100% - var(--frame-width)) calc(100% - var(--frame-width)),
+        var(--frame-width) calc(100% - var(--frame-width)),
+        var(--frame-width) 0
+    );
+}
+
+/* =============================================
+   2. КНОПКА (МЕХАНИЗМ)
+   ============================================= */
+.cnc-btn {
+    position: relative;
+    flex: 1;
+    height: var(--btn-height);
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+
+    /* --- ЛОГИКА РАЗМЕРОВ (ВАЖНО) --- */
+    /* Мы задаем margin слева и справа равный ширине крыльев.
+       Это заставляет центральную часть (тело) сжаться. */
+
+    margin-top: var(--frame-width);
+    margin-bottom: calc(var(--frame-width) - 1px);
+
+    /* Слева и справа отступаем на [Рамка + Ширина крыла - 1px стык] */
+    margin-left: calc(var(--frame-width) + var(--current-wall-size) - 1px);
+    margin-right: calc(var(--frame-width) + var(--current-wall-size) - 1px);
+
+    transform: translateY(var(--lift-amount));
+
+    /* Анимация margin создаст эффект расширения тела при уменьшении wall-size */
+    transition: all 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    z-index: 10;
+}
+
+/* =============================================
+   3. ТЕЛО КНОПКИ (ЛИЦЕВАЯ ГРАНЬ)
+   ============================================= */
+.cnc-btn__body {
+    position: relative;
+    width: 100%;
+    height: 100%;
+
+    /* Текстура ТОЛЬКО здесь */
+    background-image: url("/img/metal-texture.png");
+    background-blend-mode: multiply;
+    background-size: 150px;
+    background-clip: padding-box;
+
+    border: none;
+    outline: var(--border-width) solid var(--cnc-color-border);
+    outline-offset: calc(var(--border-width) * -1);
+
+    z-index: 50;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cnc-btn__text {
+    font-family: 'Jura', sans-serif;
+    font-size: 20px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #111;
+    font-weight: bold;
+    transform: skewX(-10deg);
+    user-select: none;
+
+    /* ДОБАВЛЕНО: Плавность для шрифта */
+    transition: font-size 0.1s ease-out;
+}
+
+/* =============================================
+   4. СТЕНКИ (КРЫЛЬЯ)
+   ============================================= */
+.cnc-btn__wall {
+    position: absolute;
+
+    /* ЦВЕТ: Тот самый темно-серый (#5B5B5B), как у рамок */
+    background-color: var(--cnc-color-body);
+
+    /* ТЕКСТУРА: Убрана */
+    background-image: none;
+
+    /* ГРАНИЦЫ: Оставляем обводку, но убираем верхнюю, чтобы не было треугольников */
+    border: var(--border-width) solid var(--cnc-color-border);
+    border-top: none;
+
+    z-index: 1; /* Под телом */
+
+    /* Ширина берется из переменной */
+    width: var(--current-wall-size);
+    height: 100%;
+
+    transition: width 0.1s;
+}
+
+/* Левое крыло */
+.cnc-btn__wall--left {
+    top: 0;
+    /* Отрицательное позиционирование: вылезает влево из тела */
+    left: calc(var(--current-wall-size) * -1);
+
+    transform-origin: top right;
+    transform: skewY(-45deg);
+    border-right: none;
+}
+
+/* Правое крыло */
+.cnc-btn__wall--right {
+    top: 0;
+    /* Отрицательное позиционирование: вылезает вправо из тела */
+    right: calc(var(--current-wall-size) * -1);
+
+    transform-origin: top left;
+    transform: skewY(45deg);
+    border-left: none;
+}
+
+/* Нижняя стенка (Трапеция) */
+.cnc-btn__wall--bottom {
+    top: 100%;
+
+    /* Высота нижней грани тоже уменьшается при нажатии,
+       чтобы сохранить перспективу (с 7px до 2px) */
+    height: var(--current-wall-size);
+
+    /* Растягиваем от края левого крыла до края правого крыла */
+    left: calc(var(--current-wall-size) * -1);
+    right: calc(var(--current-wall-size) * -1);
+    width: auto;
+
+    /* Цвет: тот же серый, без текстуры */
+    background-color: var(--cnc-color-border);
+    background-image: none;
+
+    /* Полигон обновляется вместе с переменной */
+    clip-path: polygon(
+        var(--current-wall-size) 0,
+        calc(100% - var(--current-wall-size)) 0,
+        100% 100%,
+        0 100%
+    );
+    border-top: none;
+
+    transition: height 0.1s;
+}
+
+/* =============================================
+   5. АНИМАЦИЯ (НАЖАТИЕ)
+   ============================================= */
+.cnc-btn:active,
+.cnc-btn--active {
+    /* 1. Меняем ширину стенок на 2px */
+    --current-wall-size: var(--active-wall-size);
+
+    /* 2. Опускаем кнопку */
+    transform: translateY(var(--press-depth));
+}
+
+.cnc-btn:active .cnc-btn__body,
+.cnc-btn--active .cnc-btn__body {
+    filter: brightness(0.8);
+    box-shadow: inset 0 0 15px rgba(0,0,0,0.8);
+}
+
+/* Увеличение шрифта при нажатии */
+.cnc-btn:active .cnc-btn__text,
+.cnc-btn--active .cnc-btn__text {
+    font-size: 22px; /* Увеличиваем на 2px (10%) */
+}

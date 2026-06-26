@@ -1,0 +1,12 @@
+cnc:
+  thresholds:
+    z_temp: 30.0
+    y_temp: 40.0
+    x_temp: 30.0
+    spindle_temp: 30.0
+    spindle_smoothed_speed_rpm: 3000.0
+    spindle_speed_rpm: 3200.0
+    ElectricCurrent_1: 15.0
+    Voltage_1: 240.0
+    Power_1: 5.0
+    Torque_1: 45.0

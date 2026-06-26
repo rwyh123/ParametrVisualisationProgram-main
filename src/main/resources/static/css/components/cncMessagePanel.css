@@ -1,0 +1,167 @@
+@import url('https://fonts.googleapis.com/css2?family=Jura:wght@400;700&display=swap');
+
+/* =============================================
+   КОНТЕЙНЕР СООБЩЕНИЯ (КВАДРАТ)
+   ============================================= */
+.cnc-message-panel {
+    position: relative;
+
+    /* Фиксированный размер 260x260 */
+    width: 260px;
+    height: 260px;
+
+    background-color: #b7b7b7;
+    border: 1px solid #7c7c7c;
+    box-shadow:
+        0 2px 0 #8a8a8a,
+        0 3px 3px rgba(0,0,0,0.45);
+
+    /* Отступ равен толщине ножки Y (4px) */
+    padding: 4px;
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+
+    /* Зазор между заголовком и телом */
+    gap: 4px;
+
+    /* --- ФАСКИ (Золотой стандарт Горизонтальной Y) --- */
+    background-origin: border-box;
+    background-repeat: no-repeat;
+
+    background-image:
+        /* 1. УГЛЫ (CORNERS) */
+        linear-gradient(45deg, transparent 4px, #7c7c7c 4px, #7c7c7c 5px, transparent 5px),    /* TL */
+        linear-gradient(-45deg, transparent 4px, #7c7c7c 4px, #7c7c7c 5px, transparent 5px),   /* TR */
+        linear-gradient(135deg, transparent 4px, #7c7c7c 4px, #7c7c7c 5px, transparent 5px),   /* BL */
+        linear-gradient(-135deg, transparent 4px, #7c7c7c 4px, #7c7c7c 5px, transparent 5px),  /* BR */
+
+        /* 2. НОЖКИ Y (Горизонтальные) */
+        linear-gradient(to right, #7c7c7c, #7c7c7c), /* Левая */
+        linear-gradient(to right, #7c7c7c, #7c7c7c), /* Правая */
+
+        /* 3. ВЕТКИ Y (ARMS) - Углы 125/55 */
+
+        /* ЛЕВАЯ СТОРОНА: */
+        /* Верх (>) : Угол 125deg */
+        linear-gradient(125deg, transparent 3px, #7c7c7c 3px, #7c7c7c 4px, transparent 4px),
+        /* Низ (<) : Угол 55deg */
+        linear-gradient(55deg, transparent 3px, #7c7c7c 3px, #7c7c7c 4px, transparent 4px),
+
+        /* ПРАВАЯ СТОРОНА: */
+        /* Верх (<) : Угол -125deg */
+        linear-gradient(-125deg, transparent 3px, #7c7c7c 3px, #7c7c7c 4px, transparent 4px),
+        /* Низ (>) : Угол -55deg */
+        linear-gradient(-55deg, transparent 3px, #7c7c7c 3px, #7c7c7c 4px, transparent 4px);
+
+    background-position:
+        /* Углы */
+        top left, top right, bottom left, bottom right,
+
+        /* Ножки Y (Центрируем относительно зазора) */
+        /* Header 32px + Pad 4px = 36px (начало gap). Gap 4px. Центр = 38px. */
+        /* Смещаем на -0.5px для центровки линии высотой 1px */
+        left 0 top 38.5px,
+        right 0 top 38.5px,
+
+        /* Ветки Y */
+        /* Сдвигаем влево (left 2px), чтобы соединиться с ножкой 2.5px */
+
+        /* Верхняя ветка (идет в Header) - Выше ножки */
+        left 2px top 34.5px,
+        /* Нижняя ветка (идет в Body) - Ниже ножки */
+        left 2px top 38.5px,
+
+        /* Правая сторона */
+        right 2px top 34.5px,
+        right 2px top 38.5px;
+
+    background-size:
+        /* Углы */
+        6.5px 6.5px, 6.5px 6.5px, 6.5px 6.5px, 6.5px 6.5px,
+
+        /* Ножки (Длина 2.5px, Высота 1px) */
+        2.5px 1px, 2.5px 1px,
+
+        /* Ветки */
+        5px 5px, 5px 5px, 5px 5px, 5px 5px;
+}
+
+
+/* =============================================
+   ВНУТРЕННИЕ ЭКРАНЫ
+   ============================================= */
+
+.cnc-message-panel__screen {
+    position: relative;
+    border: 1px solid #7c7c7c;
+    box-sizing: border-box;
+    font-family: 'Jura', sans-serif;
+    color: #111;
+    flex: none;
+}
+
+/* 1. ЗАГОЛОВОК (Белый) */
+.cnc-message-panel__screen--header {
+    height: 32px; /* Фиксированная высота */
+    background-color: #ffffff;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    box-shadow: inset 0 1px 0 #efefef, inset 0 -1px 0 #cccccc;
+
+    font-size: 14px;
+    letter-spacing: 2px;
+}
+
+/* 2. ТЕЛО (Черный) */
+.cnc-message-panel__screen--body {
+    flex: 1; /* Занимает всё оставшееся место */
+    background-color: #000000;
+
+    padding: 8px 10px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    box-shadow: inset 0 1px 0 #333, inset 0 -1px 0 #333;
+    overflow: hidden;
+}
+
+/* --- ТЕКСТ ВНУТРИ --- */
+
+.cnc-message-panel__screen span {
+    display: inline-block;
+    transform: skewX(-8deg);
+}
+
+.cnc-message-panel__line {
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 11px; /* Уменьшили шрифт (было 13px) */
+    letter-spacing: 1px;
+    color: #f5f5f5;
+    line-height: 1.4;
+}
+
+.cnc-message-panel__label {
+    color: #a0a0a0; /* Чуть тусклее для лейбла */
+    margin-right: 6px;
+}
+
+.cnc-message-panel__value {
+    color: #ffffff;
+}
+
+/* Блок Body может переноситься */
+.cnc-message-panel__line--content {
+    margin-top: 4px;
+    align-items: flex-start;
+}
+.cnc-message-panel__line--content .cnc-message-panel__value {
+    white-space: normal;
+}

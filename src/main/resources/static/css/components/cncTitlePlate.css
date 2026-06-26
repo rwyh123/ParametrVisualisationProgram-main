@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Jura:wght@400;700&display=swap');
+
+/* Чёрная табличка с болтами и линией */
+.cnc-title-plate {
+    position: relative;
+    width: 230px;        /* подгони под свой макет */
+    height: 60px;
+    background: #000000;
+    border-radius: 18px;
+    border: 2px solid #202020;
+    box-shadow:
+        0 2px 4px rgba(0, 0, 0, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    overflow: visible;
+}
+
+/* Текст на табличке */
+.cnc-title-plate__text {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 6px;
+    text-align: center;
+    font-family: 'Jura', sans-serif;
+    text-transform: uppercase;
+    font-size: 12px;
+    line-height: 12px;
+    letter-spacing: 2px;
+    color: #ffffff;
+    transform: skewX(-8deg);
+}
+
+.cnc-title-plate__text span {
+    display: inline-block;
+}
+
+/* Серая линия между болтами */
+.cnc-title-plate__line {
+    position: absolute;
+    left: 34px;          /* внутрь от болтов */
+    right: 34px;
+    bottom: 16px;
+    height: 2px;
+    background: #bcbcbc;
+}
+
+/* Болты внутри таблички, чуть меньше */
+.cnc-title-plate__bolt {
+    position: absolute;
+    width: 22px;
+    height: 22px;
+}
+
+/* Нижний левый и правый болты – внутри таблички с отступом от края */
+.cnc-title-plate__bolt--left {
+    bottom: 6px;   /* было -4px */
+    left: 10px;
+}
+
+.cnc-title-plate__bolt--right {
+    bottom: 6px;   /* было -4px */
+    right: 10px;
+}
