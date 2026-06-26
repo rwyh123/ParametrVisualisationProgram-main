@@ -34,7 +34,7 @@ JDK: 17
 
 Gradle Wrapper: ./gradlew
 
-База данных: PostgreSQL 18 (БД: `MTConnectData`, пользователь: `appuser`, пароль: `rwyh123`)
+База данных: PostgreSQL 18 
 
 OS: Windows / macOS / Linux
 
